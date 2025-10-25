@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema; // <- penting!
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Paginator::useBootstrapFive();
+        // batasi default panjang string agar index tidak melebihi batas
+        Schema::defaultStringLength(125);
     }
 }

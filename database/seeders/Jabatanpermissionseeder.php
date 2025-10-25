@@ -15,38 +15,32 @@ class Jabatanpermissionseeder extends Seeder
      */
     public function run(): void
     {
-        $permissiongroup = Permission_group::create([
+        // Buat permission group jika belum ada
+        $permissiongroup = Permission_group::firstOrCreate([
             'name' => 'Jabatan'
         ]);
 
-        Permission::create([
-            'name' => 'jabatan.index',
-            'id_permission_group' => $permissiongroup->id
-        ]);
+        // Daftar permission
+        $permissionNames = [
+            'jabatan.index',
+            'jabatan.create',
+            'jabatan.edit',
+            'jabatan.show',
+            'jabatan.delete',
+        ];
 
-        Permission::create([
-            'name' => 'jabatan.create',
-            'id_permission_group' => $permissiongroup->id
-        ]);
+        foreach ($permissionNames as $permName) {
+            // Cek apakah permission sudah ada
+            Permission::firstOrCreate(
+                ['name' => $permName, 'guard_name' => 'web'],
+                ['id_permission_group' => $permissiongroup->id]
+            );
+        }
 
-        Permission::create([
-            'name' => 'jabatan.edit',
-            'id_permission_group' => $permissiongroup->id
-        ]);
-
-
-        Permission::create([
-            'name' => 'jabatan.show',
-            'id_permission_group' => $permissiongroup->id
-        ]);
-
-        Permission::create([
-            'name' => 'jabatan.delete',
-            'id_permission_group' => $permissiongroup->id
-        ]);
-
-
+        // Ambil semua permission dalam group ini
         $permissions = Permission::where('id_permission_group', $permissiongroup->id)->get();
+
+        // Beri semua permission ini ke role ID 1
         $roleID = 1;
         $role = Role::findById($roleID);
         $role->givePermissionTo($permissions);

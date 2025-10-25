@@ -23,7 +23,9 @@ class Defaultsettingseeder extends Seeder
             'denda' => true,
             'periode_laporan_dari' => '1',
             'periode_laporan_sampai' => '31',
-            'periode_laporan_next_bulan' => false
+            'periode_laporan_next_bulan' => false,
+            'wa_api_key' => '', // Tambahan sebelumnya
+            'jml_hari_izin_max' => 0, // ✅ Tambahkan ini untuk hindari error baru
         ]);
     }
 }
